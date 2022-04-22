@@ -20,30 +20,16 @@ function Home({ navigation }) {
   const allProducts = products.products;
   const [cartItems, updatecartItems] = useState(store.getState());
   store.subscribe(() => updatecartItems(store.getState()));
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 25,
-            width: "80%",
-            textAlign: "center",
-            paddingLeft: "10%",
-          }}
-        >
-          Home
-        </Text>
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
         <View
           style={{
             flexDirection: "row",
+            top: 0,
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <Text>{cartItems.length}</Text>
@@ -58,7 +44,11 @@ function Home({ navigation }) {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      ),
+    });
+  }, [navigation]);
+  return (
+    <SafeAreaView style={styles.container}>
       <FlatList
         numColumns={2}
         contentContainerStyle={styles.list}
