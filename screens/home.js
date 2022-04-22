@@ -18,6 +18,10 @@ const windowHeight = Dimensions.get("window").height;
 
 function Home({ navigation }) {
   const [allproducts, getData] = useState(store.getState().allProducts);
+  const [cartProducts, updatecartProducts] = useState(
+    store.getState().cartProducts
+  );
+
   useEffect(() => {
     fetch("https://dummyjson.com/products")
       .then((response) => response.json())
@@ -28,23 +32,22 @@ function Home({ navigation }) {
         alert(error);
       });
   }, []);
-  const [cartProducts, updatecartProducts] = useState(
-    store.getState().cartProducts
-  );
-  store.subscribe(() => updatecartProducts(store.getState().cartProducts));
-  navigation.setOptions({
-    headerRight: () => (
-      <View
-        style={{
-          flexDirection: "row",
-          top: 0,
-          height: 50,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text>{cartProducts.length}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+
+  useEffect(() => {
+    store.subscribe(() => updatecartProducts(store.getState().cartProducts));
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            top: 0,
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onPress={() => navigation.navigate("Cart")}
+        >
+          <Text>{cartProducts.length}</Text>
           <Text
             style={{
               fontSize: 20,
@@ -54,8 +57,8 @@ function Home({ navigation }) {
             🛒
           </Text>
         </TouchableOpacity>
-      </View>
-    ),
+      ),
+    });
   });
   return (
     <SafeAreaView style={styles.container}>
