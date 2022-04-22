@@ -21,6 +21,7 @@ function Home({ navigation }) {
   const [cartProducts, updatecartProducts] = useState(
     store.getState().cartProducts
   );
+  store.subscribe(() => updatecartProducts(store.getState().cartProducts));
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")
@@ -34,7 +35,6 @@ function Home({ navigation }) {
   }, []);
 
   useEffect(() => {
-    store.subscribe(() => updatecartProducts(store.getState().cartProducts));
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity

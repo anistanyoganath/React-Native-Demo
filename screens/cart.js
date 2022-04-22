@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -16,10 +16,8 @@ function Cart() {
   );
   const [totalPrice, updatePrice] = useState(store.getState().totalPrice);
 
-  useEffect(() => {
-    store.subscribe(() => updatecartProducts(store.getState().cartProducts));
-    store.subscribe(() => updatePrice(store.getState().totalPrice));
-  });
+  store.subscribe(() => updatecartProducts(store.getState().cartProducts));
+  store.subscribe(() => updatePrice(store.getState().totalPrice));
 
   return (
     <SafeAreaView style={{ flex: 1, margin: 10 }}>
