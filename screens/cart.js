@@ -11,14 +11,19 @@ import store from "../redux/store";
 import { removefromcart } from "../redux/action";
 
 function Cart() {
-  const [cartItems, updatecartItems] = useState(store.getState());
-  store.subscribe(() => updatecartItems(store.getState()));
+  const [cartProducts, updatecartProducts] = useState(
+    store.getState().cartProducts
+  );
+  const [totalPrice, updatePrice] = useState(store.getState().totalPrice);
+
+  store.subscribe(() => updatecartProducts(store.getState().cartProducts));
+  store.subscribe(() => updatePrice(store.getState().totalPrice));
 
   return (
     <SafeAreaView style={{ flex: 1, margin: 10 }}>
-      <Text>💵 852</Text>
+      <Text>💵 {totalPrice}</Text>
       <FlatList
-        data={cartItems}
+        data={cartProducts}
         keyExtractor={({ id }, index) => id}
         renderItem={({ item }) => {
           return (
@@ -48,7 +53,6 @@ function Cart() {
                 onPress={() => {
                   removefromcart(item);
                 }}
-                id={item.id}
               >
                 <Text style={{ fontSize: 25 }}>⛔</Text>
               </TouchableOpacity>

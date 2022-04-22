@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,16 +10,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import store from "../redux/store";
-import products from "../data";
+
 import { addtocart, removefromcart } from "../redux/action";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 function Home({ navigation }) {
-  const allProducts = products.products;
-  const [cartItems, updatecartItems] = useState(store.getState());
-  store.subscribe(() => updatecartItems(store.getState()));
+  const [allproducts, getData] = useState(store.getState().allProducts);
+  useEffect(() => {
+    fetch("https://dummyjson.com/products")
+      .then((response) => response.json())
+      .then((json) => {
+        getData(json.products);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+  const [cartProducts, updatecartProducts] = useState(
+    store.getState().cartProducts
+  );
+  store.subscribe(() => updatecartProducts(store.getState().cartProducts));
   navigation.setOptions({
     headerRight: () => (
       <View
@@ -31,7 +43,7 @@ function Home({ navigation }) {
           justifyContent: "center",
         }}
       >
-        <Text>{cartItems.length}</Text>
+        <Text>{cartProducts.length}</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
           <Text
             style={{
@@ -50,14 +62,14 @@ function Home({ navigation }) {
       <FlatList
         numColumns={2}
         contentContainerStyle={styles.list}
-        data={allProducts}
+        data={allproducts}
         keyExtractor={({ id }, index) => id}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
               style={styles.product}
               onPress={() =>
-                cartItems.includes(item)
+                cartProducts.includes(item)
                   ? removefromcart(item)
                   : addtocart(item)
               }
