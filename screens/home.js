@@ -20,33 +20,31 @@ function Home({ navigation }) {
   const allProducts = products.products;
   const [cartItems, updatecartItems] = useState(store.getState());
   store.subscribe(() => updatecartItems(store.getState()));
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <View
-          style={{
-            flexDirection: "row",
-            top: 0,
-            height: 50,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text>{cartItems.length}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-            <Text
-              style={{
-                fontSize: 20,
-                textAlign: "right",
-              }}
-            >
-              🛒
-            </Text>
-          </TouchableOpacity>
-        </View>
-      ),
-    });
-  }, [navigation]);
+  navigation.setOptions({
+    headerRight: () => (
+      <View
+        style={{
+          flexDirection: "row",
+          top: 0,
+          height: 50,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text>{cartItems.length}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: "right",
+            }}
+          >
+            🛒
+          </Text>
+        </TouchableOpacity>
+      </View>
+    ),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
