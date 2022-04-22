@@ -17,6 +17,7 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 function Home({ navigation }) {
+  const allProducts = products.products;
   const [cartItems, updatecartItems] = useState(store.getState());
   store.subscribe(() => updatecartItems(store.getState()));
 
@@ -61,13 +62,17 @@ function Home({ navigation }) {
       <FlatList
         numColumns={2}
         contentContainerStyle={styles.list}
-        data={products.products}
+        data={allProducts}
         keyExtractor={({ id }, index) => id}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
               style={styles.product}
-              onPress={() => addtocart(item)}
+              onPress={() =>
+                cartItems.includes(item)
+                  ? removefromcart(item)
+                  : addtocart(item)
+              }
             >
               <Image
                 source={{ uri: item.thumbnail }}
